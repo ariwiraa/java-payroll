@@ -17,13 +17,13 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    private ResponseData<Object> responseData;
+    private ResponseData responseData;
 
     @PostMapping
     public ResponseEntity<?> addEmployee(@Valid @RequestBody EmployeeRequest request) throws Exception {
         Employee employee = employeeService.add(request);
 
-        responseData = new ResponseData<>(201, "Success", employee);
+        responseData = new ResponseData(201, "Success", employee);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 
@@ -31,7 +31,7 @@ public class EmployeeController {
     public ResponseEntity<?> getAllEmployees() {
        List<Employee> employees = employeeService.getAllEmployees();
 
-        responseData = new ResponseData<>(200, "Success", employees);
+        responseData = new ResponseData(200, "Success", employees);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 
@@ -39,7 +39,7 @@ public class EmployeeController {
     public ResponseEntity<?> getEmployeeById(@PathVariable String id) throws Exception {
         Employee employee = employeeService.getEmployeeById(id);
 
-        responseData = new ResponseData<>(200, "Success", employee);
+        responseData = new ResponseData(200, "Success", employee);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 }

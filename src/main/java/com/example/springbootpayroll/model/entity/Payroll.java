@@ -20,15 +20,13 @@ public class Payroll {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotBlank(message = "period is required")
+
     @Column(nullable = false)
     private String period;
 
     @Column(nullable = false)
-    @NotNull(message = "presence is required")
     private Integer presence;
 
-    @NotNull(message = "presence is required")
     @Column(name = "not_present", nullable = false)
     private Integer notPresent;
 

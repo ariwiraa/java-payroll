@@ -20,9 +20,7 @@ public class SalaryMatrix {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
-    @NotNull(message = "grade is required")
-    @Max(value = 5, message = "grade is no more than 5")
+    @Column(nullable = false, unique = true)
     private Integer grade;
 
     @Column(nullable = false)

@@ -17,13 +17,13 @@ public class SalaryMatrixController {
     @Autowired
     private SalaryMatrixService salaryMatrixService;
 
-    private ResponseData<Object> responseData;
+    private ResponseData responseData;
 
     @PostMapping
     public ResponseEntity<?> addSalaryMatrix(@Valid @RequestBody SalaryMatrixRequest request) throws Exception {
         SalaryMatrix salaryMatrix = salaryMatrixService.add(request);
 
-        responseData = new ResponseData<>(201, "Success", salaryMatrix);
+        responseData = new ResponseData(201, "Success", salaryMatrix);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 
@@ -31,7 +31,7 @@ public class SalaryMatrixController {
     public ResponseEntity<?> getAllSalariesMatrix() {
         List<SalaryMatrix> salaryMatrixList = salaryMatrixService.getSalariesMatrix();
 
-        responseData = new ResponseData<>(200, "Success", salaryMatrixList);
+        responseData = new ResponseData(200, "Success", salaryMatrixList);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 
@@ -39,7 +39,7 @@ public class SalaryMatrixController {
     public ResponseEntity<?> getSalaryMatrix(@PathVariable String id) throws Exception {
         SalaryMatrix salaryMatrix = salaryMatrixService.getSalaryMatrixById(id);
 
-        responseData = new ResponseData<>(200, "Success", salaryMatrix);
+        responseData = new ResponseData(200, "Success", salaryMatrix);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 
@@ -47,7 +47,7 @@ public class SalaryMatrixController {
     public ResponseEntity<?> updateSalaryMatrix(@PathVariable String id, @Valid @RequestBody SalaryMatrixRequest request) throws Exception {
         SalaryMatrix salaryMatrix = salaryMatrixService.updateSalaryMatrix(id, request);
 
-        responseData = new ResponseData<>(200, "Success", salaryMatrix);
+        responseData = new ResponseData(200, "Success", salaryMatrix);
         return ResponseEntity.status(responseData.getCode()).body(responseData);
     }
 

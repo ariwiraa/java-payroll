@@ -19,17 +19,17 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotBlank(message = "name is required")
+
     @Column(length = 50, nullable = false)
     private String name;
 
-    @NotNull(message = "grade is required")
-    @Column(nullable = false)
+
+    @Column(nullable = true)
     private Integer grade;
 
-    @NotBlank(message = "gender is required")
-//    @Enumerated(EnumType.STRING)
-    private String gender;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private boolean isMarried;
 
@@ -49,5 +49,4 @@ public class Employee {
     protected void onUpdate() {
         updatedAt = new Date();
     }
-
 }

@@ -7,5 +7,5 @@ import com.example.springbootpayroll.model.entity.Payroll;
 public interface PayrollService {
     ResponsePayroll add(PayrollRequest request) throws Exception;
 
-    Payroll getByEmployeeId(String employeeId) throws Exception;
+    ResponsePayroll getByEmployeeId(String employeeId) throws Exception;
 }
