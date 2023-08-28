@@ -12,7 +12,6 @@ import com.example.springbootpayroll.model.entity.SalaryMatrix;
 import com.example.springbootpayroll.repository.EmployeeRepository;
 import com.example.springbootpayroll.repository.PayrollRepository;
 import com.example.springbootpayroll.repository.SalaryMatrixRepository;
-import com.example.springbootpayroll.service.EmployeeService;
 import com.example.springbootpayroll.service.PayrollService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -61,7 +59,7 @@ public class PayrollServiceImpl implements PayrollService {
             payroll.setPeriod(period);
             payroll.setSalary(salaryMatrix.getSalary());
             payroll.setPaycut(request.getNotPresent() * salaryMatrix.getPaycut());
-            payroll.setAdditionalSalary(request.getPresence()*salaryMatrix.getAllowance());
+            payroll.setAdditionalSalary(request.getPresence() * salaryMatrix.getAllowance());
 
             payroll = payrollRepository.save(payroll);
 
@@ -73,11 +71,11 @@ public class PayrollServiceImpl implements PayrollService {
 
     @Override
     public ResponsePayroll getByEmployeeId(String employeeId) throws Exception {
-       Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new NotFoundException("employee not found"));
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new NotFoundException("employee not found"));
 
-       SalaryMatrix salaryMatrix = salaryMatrixRepository.findByGrade(employee.getGrade());
+        SalaryMatrix salaryMatrix = salaryMatrixRepository.findByGrade(employee.getGrade());
 
-       Payroll payroll = payrollRepository.findByEmployeeId(employeeId);
+        Payroll payroll = payrollRepository.findByEmployeeId(employeeId);
 
         return createResponsePayroll(payroll, salaryMatrix, employee);
     }

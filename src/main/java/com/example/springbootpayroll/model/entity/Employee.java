@@ -24,7 +24,7 @@ public class Employee {
     private String name;
 
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Integer grade;
 
 

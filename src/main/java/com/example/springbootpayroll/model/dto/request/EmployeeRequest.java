@@ -17,7 +17,7 @@ public class EmployeeRequest {
     @NotBlank(message = "gender is required")
     private String gender;
 
-    private boolean isMarried;
+    private boolean married;
 
     @NotNull(message = "grade is required")
     private Integer grade;

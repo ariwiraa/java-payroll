@@ -11,7 +11,6 @@ import com.example.springbootpayroll.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (exists) {
             Employee employee = new Employee();
-
-            Gender gender = Gender.valueOf(request.getGender().toUpperCase());
-            if (gender != Gender.MALE && gender != Gender.FEMALE) {
+            Gender gender;
+            try {
+                gender = Gender.valueOf(request.getGender().toUpperCase());
+            } catch (Exception e) {
                 throw new BadRequestException("Invalid gender value");
             }
 
@@ -60,7 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
 
         if (optionalEmployee.isPresent()) {
-            return  optionalEmployee.get();
+            return optionalEmployee.get();
         }
 
         throw new NotFoundException("Employee is not exists");

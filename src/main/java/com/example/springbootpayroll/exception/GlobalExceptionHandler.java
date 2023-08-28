@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<ResponseError> handlerBadRequestException(BadRequestException e) {
         log.error("handle BadRequestException", e);
-        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), e.getMessage());
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(responseError.getCode()).body(responseError);
     }
 
