@@ -1,5 +1,6 @@
 package com.example.springbootpayroll.model.dto.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,11 @@ public class PayrollRequest {
     private String year;
 
     @NotNull(message = "presence is required")
+    @Min(value = 0, message = "presence must be equal or greater than 0")
     private Integer presence;
 
     @NotNull(message = "not present is required")
+    @Min(value = 0, message = "not present must be equal or greater than 0")
     private Integer notPresent;
 
 }

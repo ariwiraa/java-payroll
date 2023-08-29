@@ -91,6 +91,26 @@ public class EmployeeControllerTest {
         verify(employeeService, times(1)).getEmployeeById(id.toString());
 
     }
+
+    @Test
+    public void whenGetByIdRequestToEmployee_thenFailedResponse() throws Exception {
+        Employee employee = new Employee();
+        employee.setId("id");
+
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "id is not exists");
+
+
+        when(employeeService.getEmployeeById("1")).thenThrow(new NotFoundException("id is not exists"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.error").value(responseError.getError()));
+
+        verify(employeeService, times(1)).getEmployeeById("1");
+
+    }
    
 
     @Test
@@ -122,12 +142,12 @@ public class EmployeeControllerTest {
 
         when(employeeService.add(request)).thenThrow(new BadRequestException("Invalid gender value"));
 
-        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), "Invalid gender value");
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Invalid gender value");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
