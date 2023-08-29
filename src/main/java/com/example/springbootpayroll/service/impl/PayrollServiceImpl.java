@@ -35,11 +35,6 @@ public class PayrollServiceImpl implements PayrollService {
 
     @Override
     public ResponsePayroll add(PayrollRequest request) throws Exception {
-        boolean match = validationAttendance(request);
-
-        if (!match) {
-            throw new BadRequestException("presence or not present is a wrong value");
-        }
 
         String period = request.getMonth() + "/" + request.getYear();
         boolean periodExists = payrollRepository.existsByPeriod(period);
@@ -104,22 +99,4 @@ public class PayrollServiceImpl implements PayrollService {
         return responsePayroll;
     }
 
-    private boolean validationAttendance(PayrollRequest request) {
-        int year = Integer.parseInt(request.getYear());
-        String monthString = request.getMonth();
-        int present = request.getPresence();
-        int notPresent = request.getNotPresent();
-
-        Month month;
-        try {
-            month = Month.valueOf(monthString.toUpperCase());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid month value : ", e);
-        }
-
-        int daysInMonth = YearMonth.of(year, month).lengthOfMonth();
-
-        return present + notPresent == daysInMonth;
-
-    }
 }
