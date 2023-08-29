@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseError {
     private Integer code;
-    private String error;
+    private String message;
+    private Object error;
 }

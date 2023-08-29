@@ -74,7 +74,7 @@ public class SalaryMatrixControllerTest {
         SalaryMatrix salaryMatrix1 = new SalaryMatrix();
         salaryMatrix1.setGrade(2);
 
-        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), "grade is exists");
+        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), "Is Exists","grade is exists");
 
         when(salaryMatrixService.add(request)).thenThrow(new IsExistsException("grade is exists"));
 
@@ -84,6 +84,7 @@ public class SalaryMatrixControllerTest {
                 .andExpect(status().isConflict())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
         verify(salaryMatrixService, times(1)).add(request);
@@ -94,7 +95,7 @@ public class SalaryMatrixControllerTest {
     public void testAddSalaryMatrix_MinusValue() throws Exception {
         SalaryMatrixRequest request = new SalaryMatrixRequest(2, -5000.0F, 1000.0F, 10.0F, 300.0F);
 
-        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "{salary=salary must be greater than 0}");
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Bad Request","{salary=salary must be greater than 0}");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/matrix")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -102,6 +103,7 @@ public class SalaryMatrixControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
     }
@@ -150,7 +152,7 @@ public class SalaryMatrixControllerTest {
         SalaryMatrix salaryMatrix = new SalaryMatrix();
         salaryMatrix.setId("id");
 
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "id is not exists");
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "Not Found","id is not exists");
 
 
         when(salaryMatrixService.getSalaryMatrixById("1")).thenThrow(new NotFoundException("id is not exists"));
@@ -158,6 +160,7 @@ public class SalaryMatrixControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/matrix/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
         verify(salaryMatrixService, times(1)).getSalaryMatrixById("1");

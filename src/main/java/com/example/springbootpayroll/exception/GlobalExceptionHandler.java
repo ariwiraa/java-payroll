@@ -24,42 +24,45 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAll(final Exception e, final WebRequest request) {
         log.error("handleAll ", e);
 
-        ResponseError responseError = new ResponseError(500, e.getMessage());
+        ResponseError responseError = new ResponseError(500, "Internal Server Error", e.getMessage());
         return handleExceptionInternal(e, responseError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<ResponseError> handlerNotFoundError(NotFoundException e) {
         log.error("handle NotFoundError", e);
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "Not Found", e.getMessage());
         return ResponseEntity.status(responseError.getCode()).body(responseError);
     }
 
     @ExceptionHandler(value = IsExistsException.class)
     public ResponseEntity<ResponseError> handlerIsExistsException(IsExistsException e) {
         log.error("handle IsExistException", e);
-        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), e.getMessage());
+        ResponseError responseError = new ResponseError(HttpStatus.CONFLICT.value(), "Is Exists",e.getMessage());
         return ResponseEntity.status(responseError.getCode()).body(responseError);
     }
 
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<ResponseError> handlerBadRequestException(BadRequestException e) {
         log.error("handle BadRequestException", e);
-        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Bad Request",e.getMessage());
         return ResponseEntity.status(responseError.getCode()).body(responseError);
     }
+
+  /*  @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseError> handleValidation(MethodArgumentNotValidException e) {
+
+        return ResponseEntity.badRequest().body(responseError);
+    }*/
 
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        log.error("handle MethodArgumentNotValidException", ex);
-        Map<String, String> errors = new HashMap<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            String fieldName = error.getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        }
-        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), errors.toString());
+        log.warn("MethodArgumentNotValidException: {}", ex.getMessage());
+        Map<String, Object> mapError = new HashMap<>();
+        ex.getFieldErrors().forEach(error -> mapError.put(error.getField(), error.getDefaultMessage()));
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Error validation", mapError);
+//        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), mapError);
         return createResponseEntity(responseError, headers, HttpStatus.BAD_REQUEST, request);
     }
 }

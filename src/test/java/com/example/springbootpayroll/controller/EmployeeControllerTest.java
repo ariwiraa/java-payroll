@@ -20,10 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,7 +94,7 @@ public class EmployeeControllerTest {
         Employee employee = new Employee();
         employee.setId("id");
 
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "id is not exists");
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(), "Not Found","id is not exists");
 
 
         when(employeeService.getEmployeeById("1")).thenThrow(new NotFoundException("id is not exists"));
@@ -106,6 +103,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
         verify(employeeService, times(1)).getEmployeeById("1");
@@ -142,13 +140,14 @@ public class EmployeeControllerTest {
 
         when(employeeService.add(request)).thenThrow(new BadRequestException("Invalid gender value"));
 
-        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Invalid gender value");
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST.value(), "Bad Request","Invalid gender value");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
         verify(employeeService, times(1)).add(request);
@@ -160,13 +159,14 @@ public class EmployeeControllerTest {
 
         when(employeeService.add(request)).thenThrow(new NotFoundException("grade is not exists"));
 
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(),  "grade is not exists");
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND.value(),  "Not Found","grade is not exists");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(responseError.getCode()))
+                .andExpect(jsonPath("$.message").value(responseError.getMessage()))
                 .andExpect(jsonPath("$.error").value(responseError.getError()));
 
         verify(employeeService, times(1)).add(request);
