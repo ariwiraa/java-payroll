@@ -22,7 +22,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) throws Exception {
-        // Log response details
-        log.info("Sent response: {} {} with status {} and exception {}", request.getMethod(), request.getRequestURI(), response.getStatus(), e);
+        log.info("Sent response: {} {} with status {} ", request.getMethod(), request.getRequestURI(), response.getStatus());
     }
 }

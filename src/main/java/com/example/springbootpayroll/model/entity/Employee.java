@@ -27,7 +27,6 @@ public class Employee {
     @Column(nullable = false)
     private Integer grade;
 
-
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

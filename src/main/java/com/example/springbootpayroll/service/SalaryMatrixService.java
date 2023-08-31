@@ -11,7 +11,6 @@ public interface SalaryMatrixService {
     List<SalaryMatrix> getSalariesMatrix();
 
     SalaryMatrix getSalaryMatrixById(String id) throws Exception;
-    SalaryMatrix getSalaryMatrixByGrade(Integer grade) throws Exception;
 
     SalaryMatrix updateSalaryMatrix(String id, SalaryMatrixRequest request) throws Exception;
 }

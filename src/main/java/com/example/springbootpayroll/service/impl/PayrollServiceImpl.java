@@ -45,7 +45,6 @@ public class PayrollServiceImpl implements PayrollService {
         if (!periodExists) {
             SalaryMatrix salaryMatrix = salaryMatrixRepository.findByGrade(employee.getGrade());
 
-
             Payroll payroll = new Payroll();
 
             payroll.setEmployee(employee);

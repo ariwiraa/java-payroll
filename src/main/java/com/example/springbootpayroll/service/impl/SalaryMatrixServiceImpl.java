@@ -55,16 +55,6 @@ public class SalaryMatrixServiceImpl implements SalaryMatrixService {
         throw new NotFoundException("Salary Matrix not found");
     }
 
-    @Override
-    public SalaryMatrix getSalaryMatrixByGrade(Integer grade) throws Exception {
-        boolean exists = salaryMatrixRepository.existsByGrade(grade);
-
-        if (exists) {
-            return salaryMatrixRepository.findByGrade(grade);
-        }
-
-        throw new NotFoundException("Grade not found");
-    }
 
     @Override
     public SalaryMatrix updateSalaryMatrix(String id, SalaryMatrixRequest request) throws Exception {
